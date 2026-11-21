@@ -10,11 +10,9 @@
   --on-accent: #fff;
   --line: #d6dacd;
   --focus: #537345;
-  --font-display-ar: "Alexandria Variable", "Noto Sans Arabic Variable", sans-serif;
   --font-body-ar: "Noto Sans Arabic Variable", system-ui, sans-serif;
-  --font-display-en: "Alexandria Variable", system-ui, sans-serif;
-  --font-body-en: "Noto Sans Arabic Variable", system-ui, sans-serif;
-  --font-display: var(--font-display-ar);
+  --font-body-en: "DM Sans Variable", system-ui, sans-serif;
+  --font-display: var(--font-body-ar);
   --font-body: var(--font-body-ar);
   --radius: 1rem;
   --max-width: 82rem;
@@ -23,7 +21,7 @@
 }
 
 :root[lang="en"] {
-  --font-display: var(--font-display-en);
+  --font-display: var(--font-body-en);
   --font-body: var(--font-body-en);
 }
 

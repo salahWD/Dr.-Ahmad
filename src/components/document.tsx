@@ -1,4 +1,4 @@
-import "@fontsource-variable/alexandria";
+import "@fontsource-variable/dm-sans";
 import "@fontsource-variable/noto-sans-arabic";
 import "@/app/globals.css";
 import type { ReactNode } from "react";
