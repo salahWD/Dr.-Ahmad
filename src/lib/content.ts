@@ -4,15 +4,10 @@ type Translated<T> = Record<Locale, T>;
 export const practice = {
   name: { ar: "د. أحمد بخاش", en: "Dr. Ahmad Bakhach" },
   specialty: { ar: "العلاج الفيزيائي", en: "Physiotherapy" },
+  phone: process.env.PRACTICE_PHONE?.trim() || "+96176937274",
+  whatsapp: process.env.PRACTICE_WHATSAPP?.replace(/\D/g, "") || "96176937274",
   siteUrl: process.env.SITE_URL?.trim(),
-  phone: process.env.PRACTICE_PHONE?.trim(),
-  whatsapp: process.env.PRACTICE_WHATSAPP?.replace(/\D/g, ""),
-  mapUrl: process.env.PRACTICE_MAP_URL?.trim(),
-  location: { ar: "شارع الزيتون، مبنى الحديقة، بيروت", en: "Olive Street, Garden Building, Beirut" },
-  hours: { ar: "الاثنين إلى الجمعة، ٩ صباحاً حتى ٥ مساءً", en: "Monday–Friday, 9 am–5 pm" },
-  credentials: { ar: "مثال على المؤهلات: إجازة في العلاج الفيزيائي", en: "Example qualification: Bachelor’s degree in physiotherapy" },
   approved: process.env.SITE_INDEXABLE === "true",
-  locationLabel: { ar: "بيروت · موقع تجريبي", en: "Beirut · Demo location" },
 };
 
 type ServiceDetail = {
@@ -25,27 +20,35 @@ type ServiceDetail = {
   answer: string;
 };
 
-export const services = [
+export const conditions = [
   {
     slug: "back-neck-pain",
     copy: {
       ar: {
         title: "آلام الظهر والرقبة",
-        preparation: "فكّر في وضعية أو حركة تزعجك خلال اليوم، وأحضر أي تقارير متوفرة لديك.",
+        preparation:
+          "فكّر في وضعية أو حركة تزعجك خلال اليوم، وأحضر أي تقارير متوفرة لديك.",
         question: "هل يمكنني التحدّث عن وضعية عملي؟",
         answer: "نعم. صف كيف تجلس أو تقف أثناء العمل ومتى يبدأ الانزعاج.",
         summary: "عندما يصعب عليك الجلوس أو الالتفات أو إنجاز مهامك اليومية.",
-        intro: "قد تلاحظ ألم الظهر أو الرقبة عند الجلوس طويلاً، أو عند رفع شيء، أو حين تستدير. هذه التفاصيل تساعد على فهم ما يحدّ من حركتك.",
-        assessment: "ناقش متى تشعر بالألم والحركات التي تجدها صعبة، واختر نشاطاً يومياً ترغب في العودة إليه. تساعد هذه المعلومات على تحديد ما ينبغي تقييمه والاتفاق على الخطوة التالية.",
+        intro:
+          "قد تلاحظ ألم الظهر أو الرقبة عند الجلوس طويلاً، أو عند رفع شيء، أو حين تستدير. هذه التفاصيل تساعد على فهم ما يحدّ من حركتك.",
+        assessment:
+          "ناقش متى تشعر بالألم والحركات التي تجدها صعبة، واختر نشاطاً يومياً ترغب في العودة إليه. تساعد هذه المعلومات على تحديد ما ينبغي تقييمه والاتفاق على الخطوة التالية.",
       },
       en: {
         title: "Back and neck pain",
-        preparation: "Think of a position or movement that bothers you during the day. Bring relevant reports if you have them.",
+        preparation:
+          "Think of a position or movement that bothers you during the day. Bring relevant reports if you have them.",
         question: "Can we discuss my desk setup?",
-        answer: "Yes. Describe how you sit or stand at work and when you start to feel uncomfortable.",
-        summary: "When sitting, turning, or getting through the day feels harder.",
-        intro: "Back or neck pain may be more noticeable after sitting, lifting, or turning. The details of when you feel it can help clarify what is limiting your movement.",
-        assessment: "Talk about when you notice pain, what feels difficult, and one everyday activity you want to get back to. These details help guide the assessment and next steps.",
+        answer:
+          "Yes. Describe how you sit or stand at work and when you start to feel uncomfortable.",
+        summary:
+          "When sitting, turning, or getting through the day feels harder.",
+        intro:
+          "Back or neck pain may be more noticeable after sitting, lifting, or turning. The details of when you feel it can help clarify what is limiting your movement.",
+        assessment:
+          "Talk about when you notice pain, what feels difficult, and one everyday activity you want to get back to. These details help guide the assessment and next steps.",
       },
     },
   },
@@ -54,21 +57,29 @@ export const services = [
     copy: {
       ar: {
         title: "التأهيل بعد إصابة رياضية",
-        preparation: "دوّن النشاط الذي تودّ العودة إليه وأحضر أي تقرير يتعلّق بالإصابة.",
+        preparation:
+          "دوّن النشاط الذي تودّ العودة إليه وأحضر أي تقرير يتعلّق بالإصابة.",
         question: "هل يجب أن أكون رياضياً محترفاً؟",
-        answer: "يمكنك مناقشة نشاط تمارسه للمتعة أيضاً، مثل المشي أو الجري أو اللعب مع الأصدقاء.",
+        answer:
+          "يمكنك مناقشة نشاط تمارسه للمتعة أيضاً، مثل المشي أو الجري أو اللعب مع الأصدقاء.",
         summary: "تقييم الحركة التي تحتاجها للعودة إلى نشاطك أو رياضتك.",
-        intro: "العودة إلى الجري تختلف عن العودة إلى مباراة أو حصة تدريب. يبدأ التقييم بفهم الإصابة، ومتطلبات رياضتك، وما تستطيع فعله حالياً.",
-        assessment: "حضّر وصفاً لما حصل وأي تقارير متوفرة. ناقش الحركات التي ترغب في استعادتها والطريقة المناسبة لمراجعة تقدّمك قبل زيادة الحمل.",
+        intro:
+          "العودة إلى الجري تختلف عن العودة إلى مباراة أو حصة تدريب. يبدأ التقييم بفهم الإصابة، ومتطلبات رياضتك، وما تستطيع فعله حالياً.",
+        assessment:
+          "حضّر وصفاً لما حصل وأي تقارير متوفرة. ناقش الحركات التي ترغب في استعادتها والطريقة المناسبة لمراجعة تقدّمك قبل زيادة الحمل.",
       },
       en: {
         title: "Rehabilitation after a sports injury",
-        preparation: "Note the activity you want to return to and bring any reports about the injury.",
+        preparation:
+          "Note the activity you want to return to and bring any reports about the injury.",
         question: "Can I discuss a recreational sport?",
-        answer: "Yes. A weekend run, a walk, or a match with friends can all be starting points for discussing your goals.",
+        answer:
+          "Yes. A weekend run, a walk, or a match with friends can all be starting points for discussing your goals.",
         summary: "Assess the movement you need for your sport or activity.",
-        intro: "Returning to running is different from returning to a match or a training session. The assessment begins with your injury, the demands of your sport, and what you can do today.",
-        assessment: "Bring any available reports and be ready to describe what happened. Discuss which movements matter most to you and how to review your progress as activity increases.",
+        intro:
+          "Returning to running is different from returning to a match or a training session. The assessment begins with your injury, the demands of your sport, and what you can do today.",
+        assessment:
+          "Bring any available reports and be ready to describe what happened. Discuss which movements matter most to you and how to review your progress as activity increases.",
       },
     },
   },
@@ -77,121 +88,370 @@ export const services = [
     copy: {
       ar: {
         title: "التأهيل بعد الجراحة",
-        preparation: "أحضر تعليمات الخروج وأي ملاحظات من الجرّاح حول الحركات المسموح بها.",
+        preparation:
+          "أحضر تعليمات الخروج وأي ملاحظات من الجرّاح حول الحركات المسموح بها.",
         question: "هل نراجع تعليمات الجرّاح في الزيارة؟",
-        answer: "نعم. نقرأها معاً ونحدّد الأسئلة التي تحتاج إلى توضيح من الجرّاح.",
+        answer:
+          "نعم. نقرأها معاً ونحدّد الأسئلة التي تحتاج إلى توضيح من الجرّاح.",
         summary: "خطوات تأهيل تراعي تعليمات الجرّاح ومرحلة التعافي.",
-        intro: "تختلف الحركة المسموح بها بحسب العملية ومرحلة التعافي. تساعد تعليمات الجرّاح على تحديد ما يمكن تقييمه وأي احتياطات ينبغي مراعاتها.",
-        assessment: "أحضر تعليمات الخروج وأي تقارير لديك. ناقش الأنشطة التي تحتاجها في حياتك اليومية وأي قيود حدّدها الجرّاح.",
+        intro:
+          "تختلف الحركة المسموح بها بحسب العملية ومرحلة التعافي. تساعد تعليمات الجرّاح على تحديد ما يمكن تقييمه وأي احتياطات ينبغي مراعاتها.",
+        assessment:
+          "أحضر تعليمات الخروج وأي تقارير لديك. ناقش الأنشطة التي تحتاجها في حياتك اليومية وأي قيود حدّدها الجرّاح.",
       },
       en: {
         title: "Rehabilitation after surgery",
-        preparation: "Bring your discharge instructions and any movement restrictions from your surgeon.",
+        preparation:
+          "Bring your discharge instructions and any movement restrictions from your surgeon.",
         question: "Can we go through my surgeon’s instructions?",
-        answer: "Yes. We can read them together and identify anything that needs clarification from your surgical team.",
-        summary: "Plan the next steps with your surgeon’s instructions in mind.",
-        intro: "Movement restrictions depend on your operation and stage of recovery. Your surgeon’s instructions help guide what can be assessed and which precautions are needed.",
-        assessment: "Bring discharge instructions or reports you already have. Talk about the activities you need in daily life and any restrictions your surgeon has set.",
+        answer:
+          "Yes. We can read them together and identify anything that needs clarification from your surgical team.",
+        summary:
+          "Plan the next steps with your surgeon’s instructions in mind.",
+        intro:
+          "Movement restrictions depend on your operation and stage of recovery. Your surgeon’s instructions help guide what can be assessed and which precautions are needed.",
+        assessment:
+          "Bring discharge instructions or reports you already have. Talk about the activities you need in daily life and any restrictions your surgeon has set.",
       },
     },
   },
 ] satisfies { slug: string; copy: Translated<ServiceDetail> }[];
 
-export const content = {
-  ar: {
-    nav: { services: "الحالات", about: "عن د. أحمد", visit: "الزيارة الأولى", contact: "التواصل" },
-    navLabel: "القائمة الرئيسية", menu: "القائمة", skip: "انتقل إلى المحتوى", home: "الصفحة الرئيسية",
-    title: "د. أحمد بخاش | العلاج الفيزيائي وإعادة التأهيل",
-    description: "تعرّف على العلاج الفيزيائي مع د. أحمد، واستكشف الحالات وما يمكنك توقّعه في زيارتك الأولى.",
-    heroStart: "العلاج الفيزيائي مع",
-    heroEnd: "د. أحمد بخاش",
-    heroText: "مع د. أحمد، تبدأ الزيارة بفهم ما يصعّب حركتك وما ترغب في استعادته، ثم تحديد الخطوة التالية معاً.",
-    prepare: "حضّر لزيارتك الأولى", browse: "استكشف الحالات", book: "اطلب موعداً", another: "كل الحالات",
-    servicesKicker: "الحالات الشائعة", servicesTitle: "ما الذي يدفعك لطلب العلاج؟",
-    servicesIntro: "اختر الحالة الأقرب لما تواجهه، وتعرّف على ما يمكن مناقشته في التقييم الأول.",
-    meet: "تعرّف إلى د. أحمد بخاش", profile: "اقرأ نبذة عن د. أحمد", findClinic: "كيف تصل إلى العيادة؟",
-    demo: "نسخة تجريبية", demoNote: "بيانات العيادة والمؤهلات والصور المعروضة أمثلة توضيحية.",
-    qualification: "المؤهلات", approach: "كيف يجري التقييم؟", preparation: "ما الذي أحضره معي؟",
-    unsure: "لم تجد الحالة الأقرب إليك؟", practical: "تفاصيل الزيارة التجريبية",
-    feeLabel: "رسوم التقييم", fee: "٥٠ دولاراً أميركياً", durationLabel: "مدة التقييم", duration: "٤٥ دقيقة",
-    findDoor: "الطابق الأرضي، بجوار مدخل الحديقة. المدخل مستوٍ مع الرصيف.",
-    access: "علامة قريبة وسهولة الدخول", demoDirections: "اعرض وصف الطريق التجريبي",
-    directionsText: "من مدخل الحديقة، اتبع الرصيف حتى الباب الزجاجي في مبنى الحديقة.",
-    previewWhatsApp: "معاينة طلب واتساب", previewCall: "معاينة الاتصال", previewMessage: "مثال على الرسالة التي ترسلها للعيادة",
-    demoNumber: "رقم توضيحي", samplePhone: "رقم العيادة", confirmation: "يتأكد موعدك عندما تتفق مع د. أحمد على اليوم والساعة.",
-    portraitAlt: "صورة توضيحية لمعالج فيزيائي في العيادة", entranceAlt: "تصوّر توضيحي لمدخل العيادة عند مستوى الشارع",
-    firstVisitTitle: "ماذا يحدث في الزيارة الأولى؟",
-    firstVisitIntro: "أخبر د. أحمد بما تشعر به، وما يصعب عليك فعله اليوم، وما تريد العودة إليه.",
-    steps: [
-      ["نسمع قصّتك", "متى بدأت المشكلة؟ وما النشاط الذي ترغب في استعادته؟"],
-      ["نقيّم حركتك", "نراجع الحركات التي تؤثر في يومك بما يلائم وضعك."],
-      ["نتفق على الخطوة التالية", "تناقش مع د. أحمد أهدافك وما يمكن العمل عليه لاحقاً."],
+export const treatments = [
+  {
+    slug: "physiotherapy",
+    en: [
+      "Physiotherapy session",
+      "A one-to-one visit to discuss pain, assess movement and plan the next steps.",
     ],
-    questionsTitle: "قبل حجز الموعد",
-    questions: [
-      ["ماذا أحضر معي؟", "ارتدِ ملابس مريحة للحركة وأحضر أي تقارير أو صور طبية ذات صلة إذا كانت متوفرة لديك."],
-      ["كم تستغرق الزيارة الأولى؟", "في هذا المثال، خُصّصت ٤٥ دقيقة للتقييم الأول."],
-      ["كيف أتحقّق من تغطية التأمين؟", "اسأل شركة التأمين عن تغطية العلاج الفيزيائي والمستندات المطلوبة قبل طلب الموعد."],
-      ["متى يتأكد موعدي؟", "يتأكد الموعد بعد أن يردّ د. أحمد ويحدّد معك اليوم والساعة."],
+    ar: [
+      "جلسة علاج فيزيائي",
+      "جلسة فردية لمناقشة الألم وتقييم الحركة والاتفاق على الخطوة التالية.",
     ],
-    aboutIntro: "أنا أحمد بخاش. في الزيارة الأولى أستمع إلى ما يزعجك وأسألك عن حركة بسيطة تودّ أن تصبح أسهل في يومك.",
-    aboutApproach: "بعد التقييم، نناقش ما لاحظناه ونرتّب أولوياتك معاً. أسئلتك وما تريد العودة إليه يساعدان في تحديد الخطوة التالية.",
-    contactTitle: "تواصل مع د. أحمد بخاش",
-    contactIntro: "لطلب موعد تقييم، تواصل مباشرة مع د. أحمد واتفق معه على وقت يناسبك.",
-    contactAddress: "العنوان", contactHours: "ساعات العمل", directions: "افتح الاتجاهات",
-    whatsapp: "اطلب موعداً عبر واتساب", call: "اتصل بد. أحمد",
-    message: "مرحباً د. أحمد، أرغب في طلب موعد للتقييم الأول.",
-    photos: "نسخة تجريبية ببيانات توضيحية وصور مولّدة بالذكاء الاصطناعي.",
-    assessment: "ما الذي نناقشه في التقييم؟",
-    heroAlt: "صورة توضيحية لتقييم حركة الذراع أثناء جلسة علاج فيزيائي",
-    visitAlt: "صورة توضيحية لمناقشة الخطوة التالية خلال زيارة علاج فيزيائي",
   },
+  {
+    slug: "dry-needling",
+    en: [
+      "Dry needling",
+      "Discuss dry needling with Dr. Ahmad and whether it fits your care plan.",
+    ],
+    ar: [
+      "العلاج بالإبر الجافة",
+      "ناقش مع د. أحمد العلاج بالإبر الجافة ومدى ملاءمته لخطة رعايتك.",
+    ],
+  },
+  {
+    slug: "hijama",
+    en: [
+      "Hijama",
+      "Ask about wet cupping, what a visit involves and what to consider beforehand.",
+    ],
+    ar: [
+      "الحجامة",
+      "تعرّف إلى الحجامة الرطبة وما تتضمنه الزيارة وما ينبغي مناقشته قبلها.",
+    ],
+  },
+  {
+    slug: "rehabilitation",
+    en: [
+      "Rehabilitation sessions",
+      "Work toward the everyday movements or sporting activities that matter to you.",
+    ],
+    ar: [
+      "جلسات إعادة التأهيل",
+      "اعمل على استعادة الحركات اليومية أو الأنشطة الرياضية التي تهمّك.",
+    ],
+  },
+];
+
+export const institutions = [
+  { en: "Bluehaven University", ar: "جامعة بلوهيفن" },
+  { en: "Bayview Medical Centre", ar: "مركز بايفيو الطبي" },
+  { en: "Northshore Institute", ar: "معهد نورثشور" },
+  { en: "Cedarline Health Sciences", ar: "سيدرلاين للعلوم الصحية" },
+];
+
+export const stats = [
+  { value: "126", en: "Sessions", ar: "جلسة" },
+  { value: "+12", en: "Happy clients", ar: "عميلاً سعيداً" },
+  { value: "9", en: "Certifications", ar: "شهادات" },
+  { value: "2", en: "Years of experience", ar: "سنتان من الخبرة" },
+];
+
+export const articles = [
+  {
+    slug: "your-first-session",
+    photo: "first-visit",
+    en: {
+      title: "Getting ready for your first session",
+      category: "First visit",
+      intro: "A few things to have in mind before you arrive.",
+      sections: [
+        [
+          "Think of one everyday activity",
+          "Choose something you want to discuss, such as turning your head while driving or returning to a walk you enjoy. Note when it feels difficult.",
+        ],
+        [
+          "Bring what you already have",
+          "Pack relevant reports or scans, wear clothes you can move in and bring a short list of questions. Leave time for a 45–75 minute appointment.",
+        ],
+      ],
+    },
+    ar: {
+      title: "كيف تستعدّ لجلستك الأولى؟",
+      category: "الزيارة الأولى",
+      intro: "أمور بسيطة يمكنك تحضيرها قبل الوصول.",
+      sections: [
+        [
+          "فكّر في حركة من يومك",
+          "اختر نشاطاً تودّ مناقشته، مثل الالتفات أثناء القيادة أو العودة إلى المشي. دوّن متى يصبح صعباً.",
+        ],
+        [
+          "أحضر ما هو متوفّر لديك",
+          "أحضر التقارير أو الصور ذات الصلة، وارتدِ ملابس مريحة للحركة. اكتب أسئلتك وخصّص للموعد ما بين ٤٥ و٧٥ دقيقة.",
+        ],
+      ],
+    },
+  },
+  {
+    slug: "talking-about-your-sport",
+    photo: "movement-assessment",
+    en: {
+      title: "Tell your physiotherapist about your sport",
+      category: "Sports rehabilitation",
+      intro: "Make your next session specific to the activity you miss.",
+      sections: [
+        [
+          "Describe a normal week",
+          "Tell Dr. Ahmad what you play, how often you train and which movements your sport involves. Describe a particular moment when the problem gets in the way.",
+        ],
+        [
+          "Bring a goal to the conversation",
+          "A goal might be joining a weekend game or getting through a training session comfortably. Ask how you and Dr. Ahmad will review your progress together.",
+        ],
+      ],
+    },
+    ar: {
+      title: "كيف تتحدّث عن رياضتك مع المعالج؟",
+      category: "التأهيل الرياضي",
+      intro: "اجعل نقاشك في الجلسة مرتبطاً بالنشاط الذي تفتقده.",
+      sections: [
+        [
+          "صف أسبوعك المعتاد",
+          "أخبر د. أحمد بالرياضة التي تمارسها وعدد التدريبات والحركات المطلوبة فيها. صف موقفاً محدداً تعيقك فيه المشكلة.",
+        ],
+        [
+          "حدّد هدفاً للنقاش",
+          "قد يكون هدفك المشاركة في مباراة ودّية أو إكمال التمرين براحة. اسأل كيف ستراجعان التقدّم معاً.",
+        ],
+      ],
+    },
+  },
+  {
+    slug: "arranging-a-home-visit",
+    photo: "demo-entrance",
+    en: {
+      title: "Arranging a home physiotherapy visit",
+      category: "Home care",
+      intro: "What to share when you enquire about a visit at home in Lebanon.",
+      sections: [
+        [
+          "Start with your location",
+          "Call or message the clinic with your area, availability and the reason for your visit. Ask Dr. Ahmad to confirm coverage, fees and a time before making arrangements.",
+        ],
+        [
+          "Make arrival straightforward",
+          "Mention the floor, lift access and a nearby landmark. Ask what space is needed for the assessment and whether to have any reports ready.",
+        ],
+      ],
+    },
+    ar: {
+      title: "ترتيب زيارة علاج فيزيائي منزلية",
+      category: "الرعاية المنزلية",
+      intro: "ما يمكنك مشاركته عند الاستفسار عن زيارة منزلية في لبنان.",
+      sections: [
+        [
+          "ابدأ بموقعك",
+          "أخبر العيادة بمنطقتك والأوقات التي تناسبك وسبب الزيارة. تأكّد مع د. أحمد من التغطية الجغرافية والرسوم والموعد.",
+        ],
+        [
+          "سهّل الوصول",
+          "اذكر الطابق وتوفّر المصعد وعلامة قريبة. اسأل عن المساحة اللازمة للتقييم والتقارير التي يمكنك تجهيزها.",
+        ],
+      ],
+    },
+  },
+] as const;
+
+export const content = {
   en: {
-    nav: { services: "Conditions", about: "About Dr. Ahmad", visit: "First visit", contact: "Contact" },
-    navLabel: "Main navigation", menu: "Menu", skip: "Skip to content", home: "Home",
-    title: "Dr. Ahmad Bakhach | Physiotherapy and Rehabilitation",
-    description: "Explore physiotherapy with Dr. Ahmad, common conditions, and what to expect from your first assessment.",
-    heroStart: "Physiotherapy with",
-    heroEnd: "Dr. Ahmad Bakhach",
-    heroText: "Start with Dr. Ahmad by talking through what makes movement difficult, what you want to get back to, and the next step you can take together.",
-    prepare: "Plan your first visit", browse: "Explore conditions", book: "Request an appointment", another: "All conditions",
-    servicesKicker: "Common conditions", servicesTitle: "What brings you in?",
-    servicesIntro: "Find the concern closest to yours and see what you can discuss at a first assessment.",
-    meet: "Meet Dr. Ahmad Bakhach", profile: "Read Dr. Ahmad’s profile", findClinic: "Find the clinic",
-    demo: "Demo practice details", demoNote: "Clinic details, qualifications and photography are illustrative.",
-    qualification: "Qualifications", approach: "How I approach an assessment", preparation: "What to bring",
-    unsure: "Unsure which concern fits?", practical: "Sample visit details",
-    feeLabel: "Assessment fee", fee: "US$50", durationLabel: "Assessment length", duration: "45 minutes",
-    findDoor: "Ground floor, beside the garden gate. The entrance is level with the pavement.",
-    access: "Landmark and access", demoDirections: "View sample directions",
-    directionsText: "From the garden gate, follow the pavement to the glass door of the Garden Building.",
-    previewWhatsApp: "Preview WhatsApp request", previewCall: "Preview phone call", previewMessage: "Sample message to the clinic",
-    demoNumber: "Illustrative number", samplePhone: "Clinic phone", confirmation: "Your appointment is confirmed when you and Dr. Ahmad agree on a day and time.",
-    portraitAlt: "Illustrative portrait of a physiotherapist in a clinic", entranceAlt: "Illustrative street-level clinic entrance",
-    firstVisitTitle: "What happens at the first visit?",
-    firstVisitIntro: "Tell Dr. Ahmad what you feel, what is difficult today, and what you want to get back to.",
-    steps: [
-      ["Talk through your history", "When did the problem start, and which activity do you want to return to?"],
-      ["Assess your movement", "Review the movements that affect your day in a way that suits your situation."],
-      ["Agree on a next step", "Discuss your goals and what you can work on next with Dr. Ahmad."],
+    title: "Dr. Ahmad Bakhach | Physiotherapy in Lebanon",
+    description:
+      "Sports physiotherapy, rehabilitation and home care with Dr. Ahmad Bakhach in Lebanon.",
+    home: "Home",
+    about: "About me",
+    services: "Services",
+    articles: "Articles",
+    faq: "FAQ",
+    contact: "Contact",
+    skip: "Skip to content",
+    menu: "Menu",
+    heroLine: "The caring hands you deserve.",
+    book: "Book a session",
+    specialty: "Physiotherapy in Lebanon",
+    certifications: "Certifications",
+    demoLogos: "Illustrative institution logos",
+    hello: "Hi, I’m Ahmad Bakhach",
+    bio: "I’m a compassionate physiotherapist specializing in sports physiotherapy and athlete rehabilitation. I also provide home care for patients in Lebanon.",
+    approach: "How we work together",
+    approachText:
+      "At our first session, we talk through your history and the activities you want to return to. We assess movement together and agree on a plan that fits your goals.",
+    numbers: "The practice in numbers",
+    testimonials: "Client testimonials",
+    sampleQuotes: "Illustrative patient stories",
+    quotes: [
+      [
+        "I came in wanting to get back to weekend football. It helped to have that specific goal at the centre of our conversation.",
+        "Sports rehabilitation",
+      ],
+      [
+        "Being able to discuss care at home made it easier for our family to plan the visit.",
+        "Home care",
+      ],
     ],
-    questionsTitle: "Before you book",
-    questions: [
-      ["What should I bring?", "Wear clothes you can move in and bring any relevant reports or medical images you already have."],
-      ["How long is the first visit?", "The sample schedule allows 45 minutes for a first assessment."],
-      ["How can I check insurance coverage?", "Ask your insurer whether physiotherapy is covered and which documents they need before you request a visit."],
-      ["When is my appointment confirmed?", "Your appointment is confirmed when Dr. Ahmad replies and agrees on a day and time with you."],
+    learn: "Learn more",
+    featured: "Featured articles",
+    allArticles: "See all articles",
+    questions: "Frequently asked questions",
+    priority: "Prioritize your health",
+    chat: "Chat on WhatsApp",
+    call: "Call the clinic",
+    policy: "Cancellation policy",
+    policyText:
+      "To cancel or postpone a session, call or message the clinic with your appointment date and time. Ask the clinic to confirm the change and any notice period or fees that apply to your booking.",
+    faqItems: [
+      [
+        "What services does the clinic offer?",
+        "The clinic offers musculoskeletal and neurological rehabilitation, sports injury rehabilitation, pain and stress management, dry needling and wet cupping therapy in Lebanon.",
+      ],
+      [
+        "How can I schedule a physiotherapy appointment?",
+        "Call the clinic or send a WhatsApp message to agree on a session time.",
+      ],
+      [
+        "Do you have a cancellation policy?",
+        "Read our cancellation policy if you need to cancel or postpone an appointment.",
+      ],
+      [
+        "Are the physiotherapists at Ahmad Bakhach Physiotherapy Clinic licensed and experienced?",
+        "Dr. Ahmad has two years of experience, including sports rehabilitation and home care. Contact the clinic for his current licensing and certification details.",
+      ],
+      [
+        "What can I expect during my first visit?",
+        "We’ll discuss your medical history, assess your movement, carry out relevant tests and work with you to create a personal care plan.",
+      ],
+      [
+        "What should I wear for my first session?",
+        "Wear comfortable sweatpants or shorts and a shirt that lets you move freely.",
+      ],
+      [
+        "How long is the session?",
+        "Sessions last between 45 and 75 minutes, depending on your needs.",
+      ],
     ],
-    aboutIntro: "I’m Ahmad Bakhach. At your first visit, I’ll ask what’s been bothering you and which everyday movement you’d like to feel easier.",
-    aboutApproach: "After an assessment, we talk through what we noticed and agree on your priorities. Your questions and the activities you want to return to help guide the next step.",
-    contactTitle: "Contact Dr. Ahmad Bakhach",
-    contactIntro: "To request a first assessment, contact Dr. Ahmad directly to agree on a time.",
-    contactAddress: "Address", contactHours: "Opening hours", directions: "Get directions",
-    whatsapp: "Request a visit on WhatsApp", call: "Call Dr. Ahmad",
-    message: "Hello Dr. Ahmad, I’d like to request a first assessment.",
-    photos: "Demo practice information and AI-generated photography.",
-    assessment: "What can I discuss at the assessment?",
-    heroAlt: "Illustrative image of an arm movement assessment in physiotherapy",
-    visitAlt: "Illustrative image of a conversation during a physiotherapy visit",
+    demo: "Demo photography, institution logos and testimonials.",
+    portrait: "Illustrative portrait of a physiotherapist",
+    message: "Hello Dr. Ahmad, I’d like to book a session.",
+    firstVisit: "Your first visit",
+    conditions: "Related concerns",
+    assessment: "Your assessment",
+    bring: "What to bring",
+    bookingNote:
+      "Your session is confirmed when you and the clinic agree on a day and time.",
+  },
+  ar: {
+    title: "د. أحمد بخاش | العلاج الفيزيائي في لبنان",
+    description:
+      "علاج فيزيائي رياضي وإعادة تأهيل ورعاية منزلية مع د. أحمد بخاش في لبنان.",
+    home: "الرئيسية",
+    about: "نبذة عنّي",
+    services: "الخدمات",
+    articles: "المقالات",
+    faq: "أسئلة شائعة",
+    contact: "تواصل",
+    skip: "انتقل إلى المحتوى",
+    menu: "القائمة",
+    heroLine: "أيدٍ ترعاك كما تستحقّ.",
+    book: "احجز جلسة",
+    specialty: "العلاج الفيزيائي في لبنان",
+    certifications: "الشهادات",
+    demoLogos: "شعارات مؤسسات توضيحية",
+    hello: "مرحباً، أنا أحمد بخاش",
+    bio: "أنا معالج فيزيائي أختصّ بالعلاج الفيزيائي الرياضي وإعادة تأهيل الرياضيين. أحرص على رعاية كلّ مريض باهتمام، وأقدّم أيضاً جلسات علاج فيزيائي منزلية للمرضى في لبنان.",
+    approach: "كيف نعمل معاً؟",
+    approachText:
+      "في الجلسة الأولى، نتحدّث عن تاريخك الصحي والأنشطة التي ترغب في استعادتها. نقيّم حركتك ونتّفق معاً على خطة تناسب أهدافك.",
+    numbers: "العيادة بالأرقام",
+    testimonials: "آراء المراجعين",
+    sampleQuotes: "تجارب مرضى توضيحية",
+    quotes: [
+      [
+        "جئت لأنني أريد العودة إلى لعب كرة القدم في عطلة الأسبوع. ساعدني أن يكون هذا الهدف الواضح محور نقاشنا.",
+        "التأهيل الرياضي",
+      ],
+      [
+        "ساعدتنا إمكانية مناقشة الرعاية المنزلية على ترتيب الزيارة بما يناسب عائلتنا.",
+        "الرعاية المنزلية",
+      ],
+    ],
+    learn: "اعرف المزيد",
+    featured: "مقالات مختارة",
+    allArticles: "عرض جميع المقالات",
+    questions: "الأسئلة الشائعة",
+    priority: "امنح صحتك الأولوية",
+    chat: "تواصل عبر واتساب",
+    call: "اتصل بالعيادة",
+    policy: "سياسة الإلغاء",
+    policyText:
+      "لإلغاء جلسة أو تأجيلها، اتصل بالعيادة أو أرسل رسالة تتضمن تاريخ الموعد ووقته. اطلب تأكيد التغيير واستفسر عن مهلة الإشعار أو أي رسوم تخص حجزك.",
+    faqItems: [
+      [
+        "ما الخدمات التي تقدّمها العيادة؟",
+        "تقدّم العيادة في لبنان التأهيل العضلي الهيكلي والعصبي وتأهيل الإصابات الرياضية والتعامل مع الألم والتوتر، إضافة إلى العلاج بالإبر الجافة والحجامة الرطبة.",
+      ],
+      [
+        "كيف أحجز موعداً للعلاج الفيزيائي؟",
+        "اتصل بالعيادة أو أرسل رسالة عبر واتساب للاتفاق على وقت الجلسة.",
+      ],
+      [
+        "هل لديكم سياسة لإلغاء المواعيد؟",
+        "يمكنك الاطّلاع على سياسة الإلغاء عند الحاجة إلى إلغاء موعدك أو تأجيله.",
+      ],
+      [
+        "هل يتمتع المعالجون في عيادة أحمد بخاش بالترخيص والخبرة؟",
+        "لدى د. أحمد سنتان من الخبرة، تشملان التأهيل الرياضي والرعاية المنزلية. تواصل مع العيادة للاطّلاع على تفاصيل الترخيص والشهادات الحالية.",
+      ],
+      [
+        "ماذا أتوقّع في الزيارة الأولى؟",
+        "نناقش تاريخك الصحي، ونقيّم حركتك ونجري الاختبارات الملائمة، ثم نضع معك خطة رعاية تناسب احتياجاتك.",
+      ],
+      [
+        "ماذا أرتدي في الجلسة الأولى؟",
+        "ارتدِ بنطالاً رياضياً مريحاً أو سروالاً قصيراً وقميصاً يتيح لك الحركة بحرية.",
+      ],
+      ["كم تستغرق الجلسة؟", "تستغرق الجلسة بين ٤٥ و٧٥ دقيقة حسب احتياجاتك."],
+    ],
+    demo: "صور وشعارات مؤسسات وشهادات مراجعين توضيحية.",
+    portrait: "صورة توضيحية لمعالج فيزيائي",
+    message: "مرحباً د. أحمد، أودّ حجز جلسة.",
+    firstVisit: "زيارتك الأولى",
+    conditions: "حالات ذات صلة",
+    assessment: "تقييم حالتك",
+    bring: "ما الذي تحضره معك؟",
+    bookingNote: "يتأكّد موعد الجلسة عندما تتّفق مع العيادة على اليوم والساعة.",
   },
 };
+
+export function bookingHref(locale: Locale) {
+  return `https://wa.me/${practice.whatsapp}?text=${encodeURIComponent(content[locale].message)}`;
+}

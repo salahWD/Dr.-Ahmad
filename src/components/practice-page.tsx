@@ -1,71 +1,141 @@
-import { Activity, ArrowDown, ArrowRight, CalendarDays, CircleHelp, Dumbbell, Footprints, MapPin, Menu, MessageCircle, Phone, Plus } from "lucide-react";
-import { content, practice, services, type Locale } from "@/lib/content";
+import type { ReactNode } from "react";
+import {
+  Activity,
+  ArrowUpRight,
+  CalendarDays,
+  Droplet,
+  Dumbbell,
+  Landmark,
+  LibraryBig,
+  Menu,
+  Microscope,
+  Phone,
+  Plus,
+  Quote,
+  ShieldPlus,
+  Syringe,
+} from "lucide-react";
+import {
+  articles,
+  bookingHref,
+  conditions,
+  content,
+  institutions,
+  practice,
+  stats,
+  treatments,
+  type Locale,
+} from "@/lib/content";
 import { href } from "@/lib/routes";
 
-const serviceIcons = [Activity, Dumbbell, Footprints];
+type Props = { locale: Locale };
+type PhotoKind =
+  | "blue-portrait"
+  | "demo-portrait"
+  | "movement-assessment"
+  | "first-visit"
+  | "demo-entrance";
 
-function Mark() {
-  return <span aria-hidden="true" className="brand-mark"><Activity size={23} strokeWidth={1.55} /></span>;
+function Photo({
+  kind,
+  alt = "",
+  hero = false,
+}: {
+  kind: PhotoKind;
+  alt?: string;
+  hero?: boolean;
+}) {
+  return (
+    <img
+      className="photo"
+      src={`/images/${kind}-1200.webp`}
+      srcSet={`/images/${kind}-640.webp 640w, /images/${kind}-1200.webp 1200w, /images/${kind}-1536.webp 1536w`}
+      sizes="(max-width: 760px) 92vw, (max-width: 1440px) 50vw, 730px"
+      alt={alt}
+      width="1536"
+      height="1024"
+      loading={hero ? "eager" : "lazy"}
+      fetchPriority={hero ? "high" : "auto"}
+    />
+  );
 }
 
-function Brand({ locale }: { locale: Locale }) {
+function Brand({ locale }: Props) {
   return (
-    <a className="brand" href={href(locale)} aria-label={`${practice.name[locale]} · ${content[locale].home}`}>
-      <Mark />
-      <span><strong>{practice.name[locale]}</strong><small>{practice.specialty[locale]}</small></span>
+    <a className="brand" href={href(locale)}>
+      <span className="brand-mark" aria-hidden="true">
+        <Activity size={26} strokeWidth={2} />
+      </span>
+      <span>
+        {practice.name[locale]}
+        <small>{practice.specialty[locale]}</small>
+      </span>
     </a>
   );
 }
 
-type PhotoKind = "movement-assessment" | "first-visit" | "demo-portrait" | "demo-entrance";
-
-function Photo({ kind, alt, hero = false }: { kind: PhotoKind; alt: string; hero?: boolean }) {
+function Book({ locale }: Props) {
   return (
-    <div className={`photo-frame visual photo-${kind}`} data-visual>
-      <img src={`/images/${kind}-1200.webp`}
-        srcSet={`/images/${kind}-640.webp 640w, /images/${kind}-1200.webp 1200w, /images/${kind}-1536.webp 1536w`}
-        sizes="(min-width: 1440px) 720px, (min-width: 840px) 55vw, 100vw"
-        width={1536} height={1024} alt={alt} loading={hero ? "eager" : "lazy"}
-        fetchPriority={hero ? "high" : "auto"} decoding={hero ? "auto" : "async"} />
-    </div>
-  );
-}
-
-function PrimaryAction({ locale }: { locale: Locale }) {
-  const copy = content[locale];
-  return (
-    <a className="button button-primary" href={href(locale, "contact")}>
-      <CalendarDays aria-hidden="true" size={18} /> {copy.book}
+    <a className="button" href={bookingHref(locale)}>
+      <CalendarDays size={18} aria-hidden="true" />
+      {content[locale].book}
     </a>
   );
 }
 
-function Header({ locale, route }: { locale: Locale; route: string }) {
-  const copy = content[locale];
-  const en = locale === "en";
-  const links = [
-    ["services", copy.nav.services], ["about", copy.nav.about],
-    ["first-visit", copy.nav.visit], ["contact", copy.nav.contact],
-  ];
-  const nav = links.map(([target, label]) => (
-    <a key={target} href={href(locale, target)} aria-current={route === target ? "page" : undefined}>{label}</a>
+function PageLink({ to, children }: { to: string; children: ReactNode }) {
+  return (
+    <a className="page-link" href={to}>
+      {children}
+      <ArrowUpRight size={18} aria-hidden="true" />
+    </a>
+  );
+}
+
+function Header({ locale, route }: Props & { route: string }) {
+  const c = content[locale];
+  const other = locale === "ar" ? "en" : "ar";
+  const nav = [
+    ["about-me", c.about],
+    ["services", c.services],
+    ["articles", c.articles],
+    ["#faq", c.faq],
+  ].map(([to, label]) => (
+    <a
+      key={to}
+      href={to.startsWith("#") ? href(locale) + to : href(locale, to)}
+      aria-current={route === to ? "page" : undefined}
+    >
+      {label}
+    </a>
   ));
-  const language = (
-    <a className="language-switch" href={href(en ? "ar" : "en", route)} lang={en ? "ar" : "en"}
-      aria-label={en ? "العربية" : "Read in English"}>{en ? "العربية" : "English"}</a>
-  );
-
   return (
-    <header className="site-header nav-centre">
+    <header className="site-header">
       <div className="wrap header-row">
         <Brand locale={locale} />
-        <nav className="desktop-navigation" aria-label={copy.navLabel}>{nav}</nav>
-        <div className="header-actions">{language}<PrimaryAction locale={locale} /></div>
-        <div className="mobile-actions">
-          {language}
+        <nav aria-label={c.menu} className="desktop-nav">
+          {nav}
+        </nav>
+        <div className="header-tools">
+          <a
+            className="language"
+            hrefLang={other}
+            lang={other}
+            href={href(other, route)}
+          >
+            {other === "ar" ? "العربية" : "English"}
+          </a>
+          <div className="header-book">
+            <Book locale={locale} />
+          </div>
           <details className="mobile-menu">
-            <summary aria-label={copy.menu}><Menu size={24} aria-hidden="true" /></summary>
-            <nav className="mobile-navigation" aria-label={copy.navLabel}>{nav}</nav>
+            <summary aria-label={c.menu}>
+              <Menu size={23} />
+            </summary>
+            <nav aria-label={c.menu}>
+              {nav}
+              <Book locale={locale} />
+            </nav>
           </details>
         </div>
       </div>
@@ -73,18 +143,108 @@ function Header({ locale, route }: { locale: Locale; route: string }) {
   );
 }
 
-function ServicesList({ locale }: { locale: Locale }) {
+function PhoneLink({ locale }: Props) {
+  const display =
+    practice.phone === "+96176937274" ? "76 937 274" : practice.phone;
   return (
-    <ul className="services-list">
-      {services.map(({ slug, copy }, index) => {
-        const Icon = serviceIcons[index];
+    <a
+      className="phone-link"
+      aria-label={`${content[locale].call} ${display}`}
+      href={`tel:${practice.phone}`}
+    >
+      <bdi dir="ltr">{display}</bdi>
+    </a>
+  );
+}
+
+function FloatingWhatsApp({ locale }: Props) {
+  return (
+    <a
+      className="whatsapp"
+      href={`https://wa.me/${practice.whatsapp}`}
+      aria-label={content[locale].chat}
+      title={content[locale].chat}
+    >
+      <svg
+        viewBox="0 0 32 32"
+        aria-hidden="true"
+        width="29"
+        height="29"
+        fill="none"
+      >
+        <path
+          d="M27.7 15.7a11.6 11.6 0 0 1-17.3 10.1l-6.1 1.6 1.6-5.9a11.6 11.6 0 1 1 21.8-5.8Z"
+          stroke="currentColor"
+          strokeWidth="2.1"
+        />
+        <path
+          d="M11.3 9.4c-.6 0-1.8 1.1-1.8 2.7 0 3.2 5.2 9.1 9.8 9.1 1.7 0 2.8-1.3 2.8-2.3 0-.5-.4-.7-.8-.9l-2.3-1.1c-.3-.1-.6 0-.8.3l-1 1.2c-1.9-.8-3.5-2.2-4.4-3.8l.9-1.2c.2-.3.3-.6.1-1l-1.2-2.6c-.2-.4-.7-.4-1.3-.4Z"
+          fill="currentColor"
+        />
+      </svg>
+    </a>
+  );
+}
+
+function Footer({ locale }: Props) {
+  const c = content[locale];
+  return (
+    <footer>
+      <div className="wrap footer-main">
+        <Brand locale={locale} />
+        <nav aria-label={c.menu}>
+          <a href={href(locale, "about-me")}>{c.about}</a>
+          <a href={href(locale, "services")}>{c.services}</a>
+          <a href={href(locale, "articles")}>{c.articles}</a>
+          <a href={href(locale, "cancellation-policy")}>{c.policy}</a>
+        </nav>
+        <span className="footer-phone">
+          <Phone size={16} aria-hidden="true" />
+          <PhoneLink locale={locale} />
+        </span>
+      </div>
+      <div className="wrap footer-note">{c.demo}</div>
+    </footer>
+  );
+}
+
+const institutionIcons = [Landmark, ShieldPlus, LibraryBig, Microscope];
+function Certifications({ locale }: Props) {
+  const c = content[locale];
+  return (
+    <section className="cert-strip" aria-labelledby="cert-heading">
+      <div className="wrap cert-row">
+        <div>
+          <h2 id="cert-heading">{c.certifications}</h2>
+          <small>{c.demoLogos}</small>
+        </div>
+        <ul>
+          {institutions.map((school, i) => {
+            const Icon = institutionIcons[i];
+            return (
+              <li key={school.en}>
+                <Icon size={33} strokeWidth={1.5} aria-hidden="true" />
+                <span>{school[locale]}</span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+const treatmentIcons = [Activity, Syringe, Droplet, Dumbbell];
+function TreatmentList({ locale }: Props) {
+  return (
+    <ul className="treatments">
+      {treatments.map((t, i) => {
+        const Icon = treatmentIcons[i];
         return (
-          <li key={slug}>
-            <a href={href(locale, `services/${slug}`)} className="service-link">
-              <span className="service-icon"><Icon aria-hidden="true" size={24} strokeWidth={1.6} /></span>
-              <span><strong>{copy[locale].title}</strong><small>{copy[locale].summary}</small></span>
-              <ArrowRight className="direction-arrow" size={19} aria-hidden="true" />
-            </a>
+          <li key={t.slug}>
+            <Icon aria-hidden="true" size={29} strokeWidth={1.5} />
+            <h3>{t[locale][0]}</h3>
+            <p>{t[locale][1]}</p>
           </li>
         );
       })}
@@ -92,17 +252,53 @@ function ServicesList({ locale }: { locale: Locale }) {
   );
 }
 
-function Faq({ locale }: { locale: Locale }) {
-  const copy = content[locale];
+function ArticleCards({ locale }: Props) {
   return (
-    <section className="faq-section chapter" aria-labelledby="questions">
-      <div className="wrap faq-grid">
-        <h2 id="questions"><CircleHelp aria-hidden="true" size={24} />{copy.questionsTitle}</h2>
-        <div className="faq-list">
-          {copy.questions.map(([question, answer]) => (
-            <details key={question}>
-              <summary>{question}<Plus aria-hidden="true" size={21} /></summary>
-              <p>{answer}</p>
+    <div className="article-cards">
+      {articles.map((a) => (
+        <a key={a.slug} href={href(locale, `articles/${a.slug}`)}>
+          <div className="card-image">
+            <Photo kind={a.photo} />
+          </div>
+          <small>{a[locale].category}</small>
+          <h3>
+            {a[locale].title}
+            <ArrowUpRight size={19} aria-hidden="true" />
+          </h3>
+        </a>
+      ))}
+    </div>
+  );
+}
+
+function Faq({ locale }: Props) {
+  const c = content[locale];
+  return (
+    <section id="faq" className="block faq">
+      <div className="wrap faq-layout">
+        <h2>{c.questions}</h2>
+        <div>
+          {c.faqItems.map(([q, a], i) => (
+            <details key={q}>
+              <summary>
+                {q}
+                <Plus size={19} aria-hidden="true" />
+              </summary>
+              <p>
+                {a}
+                {i === 1 && (
+                  <>
+                    {" "}
+                    <PhoneLink locale={locale} />
+                  </>
+                )}
+                {i === 2 && (
+                  <>
+                    {" "}
+                    <a href={href(locale, "cancellation-policy")}>{c.policy}</a>
+                  </>
+                )}
+              </p>
             </details>
           ))}
         </div>
@@ -111,178 +307,272 @@ function Faq({ locale }: { locale: Locale }) {
   );
 }
 
-function VisitSteps({ locale }: { locale: Locale }) {
-  return (
-    <ol className="visit-steps">
-      {content[locale].steps.map(([title, text], index) => (
-        <li key={title}>
-          <span className="step-number" aria-hidden="true">{new Intl.NumberFormat(locale).format(index + 1)}</span>
-          <div><strong>{title}</strong><p>{text}</p></div>
-        </li>
-      ))}
-    </ol>
-  );
-}
-
-function Home({ locale }: { locale: Locale }) {
+function Home({ locale }: Props) {
   const c = content[locale];
   return (
     <>
-      <section className="hero" data-enter aria-labelledby="hero-heading">
+      <section className="hero">
         <div className="wrap hero-grid">
           <div className="hero-copy">
-            <p className="section-label"><MapPin size={16} aria-hidden="true" />{practice.locationLabel[locale]}</p>
-            <h1 id="hero-heading">{c.heroStart}{" "}<span>{c.heroEnd}</span></h1>
-            <p className="hero-lead lead">{c.heroText}</p>
-            <div className="button-row actions"><PrimaryAction locale={locale} /><a className="text-link" href={href(locale, "first-visit")}>{c.prepare}</a></div>
+            <p className="specialty">
+              <span aria-hidden="true" />
+              {c.specialty}
+            </p>
+            <h1>
+              {locale === "en" ? "Dr. Ahmad" : "د. أحمد"}{" "}
+              <span>{locale === "en" ? "Bakhach" : "بخاش"}</span>
+            </h1>
+            <p className="tagline">{c.heroLine}</p>
+            <Book locale={locale} />
           </div>
-          <Photo kind="movement-assessment" alt={c.heroAlt} hero />
-        </div>
-        <div className="wrap hero-bottom"><a className="text-link" href="#conditions">{c.browse} <ArrowDown aria-hidden="true" size={16} /></a></div>
-      </section>
-      <section className="chapter services-section" id="conditions" aria-labelledby="conditions-heading">
-        <div className="wrap two-column">
-          <div><p className="section-label">{c.servicesKicker}</p><h2 id="conditions-heading">{c.servicesTitle}</h2><p className="section-lead">{c.servicesIntro}</p></div>
-          <ServicesList locale={locale} />
-        </div>
-      </section>
-      <section className="chapter profile-section" aria-labelledby="profile-heading">
-        <div className="wrap profile-grid">
-          <div data-moment="picture-develops"><Photo kind="demo-portrait" alt={c.portraitAlt} /></div>
-          <div><h2 id="profile-heading">{c.meet}</h2><p className="section-lead">{c.aboutIntro}</p>
-            <p className="profile-detail">{practice.credentials[locale]}</p>
-            <a className="text-link" href={href(locale, "about")}>{c.profile}</a>
-            <p className="demo-note">{c.demoNote}</p>
+          <div className="hero-art">
+            <div className="portrait-window">
+              <Photo kind="blue-portrait" alt={c.portrait} hero />
+            </div>
           </div>
         </div>
       </section>
-      <section className="chapter visit-section" aria-labelledby="visit-heading">
-        <div className="wrap visit-grid">
-          <div className="visit-content">
-            <h2 id="visit-heading">{c.firstVisitTitle}</h2>
-            <p className="section-lead">{c.firstVisitIntro}</p>
-            <VisitSteps locale={locale} />
-            <a className="button button-secondary" href={href(locale, "first-visit")}>{c.prepare}</a>
+      <Certifications locale={locale} />
+      <section className="block about">
+        <div className="wrap about-layout">
+          <div className="about-photo">
+            <Photo kind="demo-portrait" alt={c.portrait} />
           </div>
-          <Photo kind="first-visit" alt={c.visitAlt} />
+          <div>
+            <h2>{c.hello}</h2>
+            <p className="lead">{c.bio}</p>
+            <PageLink to={href(locale, "about-me")}>{c.about}</PageLink>
+          </div>
+        </div>
+      </section>
+      <section className="numbers" aria-label={c.numbers}>
+        <dl className="wrap metric-list">
+          {stats.map((s) => (
+            <div key={s.en}>
+              <dt>{s[locale]}</dt>
+              <dd>
+                <bdi dir="ltr">{s.value}</bdi>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+      <section className="block testimonials">
+        <div className="wrap">
+          <h2>{c.testimonials}</h2>
+          <p className="demo-label">{c.sampleQuotes}</p>
+          <div className="quotes">
+            {c.quotes.map(([quote, subject]) => (
+              <figure key={subject}>
+                <Quote aria-hidden="true" size={24} />
+                <blockquote>{quote}</blockquote>
+                <figcaption>{subject}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="block service-band">
+        <div className="wrap">
+          <div className="section-top">
+            <h2>{c.services}</h2>
+            <PageLink to={href(locale, "services")}>{c.learn}</PageLink>
+          </div>
+          <TreatmentList locale={locale} />
+        </div>
+      </section>
+      <section className="block">
+        <div className="wrap">
+          <div className="section-top">
+            <h2>{c.featured}</h2>
+            <PageLink to={href(locale, "articles")}>{c.allArticles}</PageLink>
+          </div>
+          <ArticleCards locale={locale} />
         </div>
       </section>
       <Faq locale={locale} />
-      <section className="clinic-section chapter" aria-labelledby="closing-heading">
-        <div className="wrap visit-grid">
-          <div><h2 id="closing-heading">{c.findClinic}</h2><Contact locale={locale} /></div>
-          <Photo kind="demo-entrance" alt={c.entranceAlt} />
+      <section className="cta">
+        <div className="wrap cta-row">
+          <h2>{c.priority}</h2>
+          <Book locale={locale} />
         </div>
       </section>
     </>
   );
 }
 
-function Contact({ locale }: { locale: Locale }) {
-  const c = content[locale];
+function ReadingPage({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
   return (
-    <div className="contact-information">
-      <p className="demo-note">{c.demo} · {c.demoNote}</p>
-      <div className="booking-actions">
-        {practice.whatsapp
-          ? <a className="button button-primary" href={`https://wa.me/${practice.whatsapp}?text=${encodeURIComponent(c.message)}`}><MessageCircle aria-hidden="true" size={18} />{c.whatsapp}</a>
-          : <details><summary className="button button-primary"><MessageCircle aria-hidden="true" size={18} />{c.previewWhatsApp}</summary>
-              <div className="preview-panel"><strong>{c.previewMessage}</strong><p>{c.message}</p></div></details>}
-        {practice.phone
-          ? <a className="text-link" href={`tel:${practice.phone}`}><Phone aria-hidden="true" size={16} />{c.call}</a>
-          : <details><summary className="text-link"><Phone aria-hidden="true" size={16} />{c.previewCall}</summary>
-              <p className="preview-panel">{c.demoNumber} · <bdi dir="ltr">+961 1 XXX XXX</bdi></p></details>}
-      </div>
-      <p className="confirmation">{c.confirmation}</p>
-      <dl className="clinic-facts">
-        <dt>{c.contactHours}</dt><dd>{practice.hours[locale]}</dd>
-        <dt>{c.contactAddress}</dt><dd>{practice.location[locale]}</dd>
-        <dt>{c.access}</dt><dd>{c.findDoor}</dd>
-        <dt>{c.samplePhone}</dt><dd><bdi dir="ltr">{practice.phone || "+961 1 XXX XXX"}</bdi></dd>
-      </dl>
-      {practice.mapUrl
-        ? <a className="text-link" href={practice.mapUrl}><MapPin aria-hidden="true" size={17} />{c.directions}</a>
-        : <details><summary className="text-link"><MapPin aria-hidden="true" size={17} />{c.demoDirections}</summary><p className="preview-panel">{c.directionsText}</p></details>}
-    </div>
+    <article className="wrap reading">
+      <h1>{title}</h1>
+      {children}
+    </article>
   );
 }
 
-function InnerPage({ locale, route }: { locale: Locale; route: string }) {
+function InnerPage({ locale, route }: Props & { route: string }) {
   const c = content[locale];
-  const service = services.find(({ slug }) => route === `services/${slug}`)?.copy[locale];
-  const pages: Partial<Record<string, [string, string]>> = {
-    services: [c.servicesTitle, c.servicesIntro],
-    about: [practice.name[locale], c.aboutIntro],
-    "first-visit": [c.firstVisitTitle, c.firstVisitIntro],
-    contact: [c.contactTitle, c.contactIntro],
-  };
-  const basic = pages[route];
-  const [title, intro] = service ? [service.title, service.intro] : basic ?? [c.title, c.description];
-  const photos: Record<string, [PhotoKind, string]> = {
-    services: ["movement-assessment", c.heroAlt], about: ["demo-portrait", c.portraitAlt],
-    contact: ["demo-entrance", c.entranceAlt], "first-visit": ["first-visit", c.visitAlt],
-  };
-  const [photo, alt] = photos[route] ?? photos.services;
-
-  return (
-    <>
-      <section className="inner-hero hero" data-enter aria-labelledby="page-heading">
-        <div className="wrap inner-grid">
-          <div className="inner-content">
-            {service && <a className="back-link" href={href(locale, "services")}>{c.another}</a>}
-            <h1 id="page-heading">{title}</h1>
-            <p className="section-lead">{intro}</p>
-            {service && <div className="article-block">
-              <h2>{c.assessment}</h2><p>{service.assessment}</p>
-              <h2>{c.preparation}</h2><p>{service.preparation}</p>
-              <div className="faq-list"><details><summary>{service.question}<Plus aria-hidden="true" size={18} /></summary><p>{service.answer}</p></details></div>
-              <PrimaryAction locale={locale} />
-            </div>}
-            {route === "about" && <div className="article-block">
-              <h2>{c.qualification}</h2><p>{practice.credentials[locale]}</p><p className="demo-note">{c.demoNote}</p>
-              <h2>{c.approach}</h2><p>{c.aboutApproach}</p>
-              <a className="text-link" href={href(locale, "first-visit")}>{c.prepare}</a></div>}
-            {route === "services" && <><ServicesList locale={locale} /><p className="help-link">{c.unsure} <a className="text-link" href={href(locale, "contact")}>{c.nav.contact}</a></p></>}
-            {route === "first-visit" && <>
-              <VisitSteps locale={locale} />
-              <div className="article-block"><h2>{c.preparation}</h2><p>{c.questions[0][1]}</p>
-                <h2>{c.practical}</h2><dl className="clinic-facts"><dt>{c.durationLabel}</dt><dd>{c.duration}</dd><dt>{c.feeLabel}</dt><dd>{c.fee}</dd></dl>
-                <PrimaryAction locale={locale} />
-              </div></>}
-            {route === "contact" && <Contact locale={locale} />}
+  const article = articles.find((a) => route === `articles/${a.slug}`);
+  if (article) {
+    const a = article[locale];
+    return (
+      <ReadingPage title={a.title}>
+        <p className="lead">{a.intro}</p>
+        <div className="reading-photo">
+          <Photo kind={article.photo} hero />
+        </div>
+        {a.sections.map(([title, body]) => (
+          <section key={title}>
+            <h2>{title}</h2>
+            <p>{body}</p>
+          </section>
+        ))}
+        <PageLink to={href(locale, "articles")}>{c.allArticles}</PageLink>
+      </ReadingPage>
+    );
+  }
+  const condition = conditions.find((s) => route === `services/${s.slug}`)
+    ?.copy[locale];
+  if (condition)
+    return (
+      <ReadingPage title={condition.title}>
+        <p className="lead">{condition.intro}</p>
+        {[
+          [c.assessment, condition.assessment],
+          [c.bring, condition.preparation],
+          [condition.question, condition.answer],
+        ].map(([h, p]) => (
+          <section key={h}>
+            <h2>{h}</h2>
+            <p>{p}</p>
+          </section>
+        ))}
+        <Book locale={locale} />
+      </ReadingPage>
+    );
+  if (route === "about-me" || route === "about")
+    return (
+      <section className="block">
+        <div className="wrap about-layout">
+          <div className="about-photo">
+            <Photo kind="demo-portrait" alt={c.portrait} hero />
           </div>
-          <Photo kind={photo} alt={alt} hero />
+          <div>
+            <h1>{c.hello}</h1>
+            <p className="lead">{c.bio}</p>
+            <h2 className="subheading">{c.approach}</h2>
+            <p>{c.approachText}</p>
+            <Book locale={locale} />
+          </div>
         </div>
       </section>
-      {route === "first-visit" && <Faq locale={locale} />}
-    </>
+    );
+  if (route === "services")
+    return (
+      <section className="block service-band">
+        <div className="wrap">
+          <h1>{c.services}</h1>
+          <p className="lead">{c.faqItems[0][1]}</p>
+          <TreatmentList locale={locale} />
+          <h2 className="subheading">{c.conditions}</h2>
+          <ul className="condition-links">
+            {conditions.map((s) => (
+              <li key={s.slug}>
+                <PageLink to={href(locale, `services/${s.slug}`)}>
+                  {s.copy[locale].title}
+                </PageLink>
+              </li>
+            ))}
+          </ul>
+          <Book locale={locale} />
+        </div>
+      </section>
+    );
+  if (route === "articles")
+    return (
+      <section className="block">
+        <div className="wrap">
+          <h1>{c.articles}</h1>
+          <ArticleCards locale={locale} />
+        </div>
+      </section>
+    );
+  if (route === "cancellation-policy")
+    return (
+      <ReadingPage title={c.policy}>
+        <p>{c.policyText}</p>
+        <PhoneLink locale={locale} />
+        <div>
+          <PageLink to={`https://wa.me/${practice.whatsapp}`}>
+            {c.chat}
+          </PageLink>
+        </div>
+      </ReadingPage>
+    );
+  if (route === "first-visit")
+    return (
+      <ReadingPage title={c.firstVisit}>
+        {c.faqItems.slice(4).map(([q, a]) => (
+          <section key={q}>
+            <h2>{q}</h2>
+            <p>{a}</p>
+          </section>
+        ))}
+        <Book locale={locale} />
+      </ReadingPage>
+    );
+  return (
+    <ReadingPage title={c.contact}>
+      <p>{c.bookingNote}</p>
+      <PhoneLink locale={locale} />
+      <div>
+        <Book locale={locale} />
+      </div>
+    </ReadingPage>
   );
 }
 
-export function PracticePage({ locale, route = "" }: { locale: Locale; route?: string }) {
-  const c = content[locale];
-  const person = {
-    "@context": "https://schema.org", "@type": "Person", name: practice.name[locale],
+export function PracticePage({
+  locale,
+  route = "",
+}: Props & { route?: string }) {
+  const practitioner = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: practice.name[locale],
     jobTitle: practice.specialty[locale],
-    url: practice.siteUrl && new URL(href(locale), practice.siteUrl).href,
     telephone: practice.phone,
+    url: practice.siteUrl && new URL(href(locale), practice.siteUrl).href,
   };
-
   return (
     <>
-      <a className="skip-link" href="#main-content">{c.skip}</a>
+      <a className="skip-link" href="#main">
+        {content[locale].skip}
+      </a>
       <Header locale={locale} route={route} />
-      <main id="main-content">
-        {route ? <InnerPage locale={locale} route={route} /> : <Home locale={locale} />}
+      <main id="main">
+        {route ? (
+          <InnerPage locale={locale} route={route} />
+        ) : (
+          <Home locale={locale} />
+        )}
       </main>
-      <footer className="site-footer">
-        <div className="wrap footer-row">
-          <Brand locale={locale} />
-          <a className="footer-link" href={href(locale, "contact")}>{c.nav.contact}</a>
-          <p>{c.photos}</p>
-        </div>
-      </footer>
-      {!route && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(person).replace(/</g, "\\u003c") }} />}
+      <Footer locale={locale} />
+      <FloatingWhatsApp locale={locale} />
+      {!route && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(practitioner).replace(/</g, "\\u003c"),
+          }}
+        />
+      )}
     </>
   );
 }

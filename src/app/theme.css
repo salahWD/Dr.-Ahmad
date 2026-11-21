@@ -1,37 +1,16 @@
 :root {
-  --page: #f5f4ef;
-  --paper: #fcfbf7;
-  --surface: #e9ebe1;
-  --surface-strong: #dce3d4;
-  --ink: #282d25;
-  --muted: #51594e;
-  --accent: #45543f;
-  --accent-hover: #34432f;
-  --on-accent: #fff;
-  --line: #d6dacd;
-  --focus: #537345;
-  --font-body-ar: "Noto Sans Arabic Variable", system-ui, sans-serif;
-  --font-body-en: "DM Sans Variable", system-ui, sans-serif;
-  --font-display: var(--font-body-ar);
-  --font-body: var(--font-body-ar);
-  --radius: 1rem;
-  --max-width: 82rem;
-  --gutter: clamp(1.25rem, 4.45vw, 4rem);
-  --header-height: 5rem;
+  --page: #ffffff;
+  --ink: #102e50;
+  --muted: #435f78;
+  --accent: #07559c;
+  --accent-hover: #073e76;
+  --sky: #e4f4ff;
+  --ice: #f3f9fe;
+  --line: #c5dceb;
+  --navy: #103c6c;
+  --font-en: "DM Sans Variable", system-ui, sans-serif;
+  --font-ar: "Noto Sans Arabic Variable", system-ui, sans-serif;
+  --body: var(--font-en);
+  --gutter: clamp(1.25rem, 5.4vw, 6rem);
 }
-
-:root[lang="en"] {
-  --font-display: var(--font-body-en);
-  --font-body: var(--font-body-en);
-}
-
-@theme inline {
-  --color-practice-page: var(--page);
-  --color-practice-paper: var(--paper);
-  --color-practice-surface: var(--surface);
-  --color-practice-ink: var(--ink);
-  --color-practice-muted: var(--muted);
-  --color-practice-accent: var(--accent);
-  --font-practice-body: var(--font-body);
-  --font-practice-display: var(--font-display);
-}
+html[lang="ar"] { --body: var(--font-ar); }
