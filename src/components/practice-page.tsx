@@ -7,7 +7,6 @@ import {
   Dumbbell,
   Landmark,
   LibraryBig,
-  Menu,
   Microscope,
   Phone,
   Plus,
@@ -27,6 +26,7 @@ import {
   type Locale,
 } from "@/lib/content";
 import { href } from "@/lib/routes";
+import { LanguageLink, MobileMenu } from "./landing-navigation";
 
 type Props = { locale: Locale };
 type PhotoKind =
@@ -62,7 +62,7 @@ function Photo({
 
 function Brand({ locale }: Props) {
   return (
-    <a className="brand" href={href(locale)}>
+    <a className="brand" href="#home">
       <span className="brand-mark" aria-hidden="true">
         <Activity size={26} strokeWidth={2} />
       </span>
@@ -74,9 +74,9 @@ function Brand({ locale }: Props) {
   );
 }
 
-function Book({ locale }: Props) {
+function Book({ locale, direct = false }: Props & { direct?: boolean }) {
   return (
-    <a className="button" href={bookingHref(locale)}>
+    <a className="button" href={direct ? bookingHref(locale) : "#booking"}>
       <CalendarDays size={18} aria-hidden="true" />
       {content[locale].book}
     </a>
@@ -92,20 +92,16 @@ function PageLink({ to, children }: { to: string; children: ReactNode }) {
   );
 }
 
-function Header({ locale, route }: Props & { route: string }) {
+function Header({ locale }: Props) {
   const c = content[locale];
   const other = locale === "ar" ? "en" : "ar";
   const nav = [
     ["about-me", c.about],
     ["services", c.services],
     ["articles", c.articles],
-    ["#faq", c.faq],
+    ["faq", c.faq],
   ].map(([to, label]) => (
-    <a
-      key={to}
-      href={to.startsWith("#") ? href(locale) + to : href(locale, to)}
-      aria-current={route === to ? "page" : undefined}
-    >
+    <a key={to} href={`#${to}`}>
       {label}
     </a>
   ));
@@ -117,26 +113,14 @@ function Header({ locale, route }: Props & { route: string }) {
           {nav}
         </nav>
         <div className="header-tools">
-          <a
-            className="language"
-            hrefLang={other}
-            lang={other}
-            href={href(other, route)}
-          >
-            {other === "ar" ? "العربية" : "English"}
-          </a>
+          <LanguageLink locale={other} base={href(other)} />
           <div className="header-book">
             <Book locale={locale} />
           </div>
-          <details className="mobile-menu">
-            <summary aria-label={c.menu}>
-              <Menu size={23} />
-            </summary>
-            <nav aria-label={c.menu}>
-              {nav}
-              <Book locale={locale} />
-            </nav>
-          </details>
+          <MobileMenu label={c.menu}>
+            {nav}
+            <Book locale={locale} />
+          </MobileMenu>
         </div>
       </div>
     </header>
@@ -193,10 +177,10 @@ function Footer({ locale }: Props) {
       <div className="wrap footer-main">
         <Brand locale={locale} />
         <nav aria-label={c.menu}>
-          <a href={href(locale, "about-me")}>{c.about}</a>
-          <a href={href(locale, "services")}>{c.services}</a>
-          <a href={href(locale, "articles")}>{c.articles}</a>
-          <a href={href(locale, "cancellation-policy")}>{c.policy}</a>
+          <a href="#about-me">{c.about}</a>
+          <a href="#services">{c.services}</a>
+          <a href="#articles">{c.articles}</a>
+          <a href="#cancellation-policy">{c.policy}</a>
         </nav>
         <span className="footer-phone">
           <Phone size={16} aria-hidden="true" />
@@ -212,7 +196,11 @@ const institutionIcons = [Landmark, ShieldPlus, LibraryBig, Microscope];
 function Certifications({ locale }: Props) {
   const c = content[locale];
   return (
-    <section className="cert-strip" aria-labelledby="cert-heading">
+    <section
+      id="certifications"
+      className="cert-strip"
+      aria-labelledby="cert-heading"
+    >
       <div className="wrap cert-row">
         <div>
           <h2 id="cert-heading">{c.certifications}</h2>
@@ -256,7 +244,7 @@ function ArticleCards({ locale }: Props) {
   return (
     <div className="article-cards">
       {articles.map((a) => (
-        <a key={a.slug} href={href(locale, `articles/${a.slug}`)}>
+        <a key={a.slug} href={`#${a.slug}`}>
           <div className="card-image">
             <Photo kind={a.photo} />
           </div>
@@ -295,12 +283,22 @@ function Faq({ locale }: Props) {
                 {i === 2 && (
                   <>
                     {" "}
-                    <a href={href(locale, "cancellation-policy")}>{c.policy}</a>
+                    <a href="#cancellation-policy">{c.policy}</a>
                   </>
                 )}
               </p>
             </details>
           ))}
+          <div
+            id="cancellation-policy"
+            tabIndex={-1}
+            className="fragment-panel"
+          >
+            <h3>{c.policy}</h3>
+            <p>
+              {c.policyText} <PhoneLink locale={locale} />
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -311,7 +309,7 @@ function Home({ locale }: Props) {
   const c = content[locale];
   return (
     <>
-      <section className="hero">
+      <section className="hero" id="home">
         <div className="wrap hero-grid">
           <div className="hero-copy">
             <p className="specialty">
@@ -333,7 +331,7 @@ function Home({ locale }: Props) {
         </div>
       </section>
       <Certifications locale={locale} />
-      <section className="block about">
+      <section id="about-me" className="block about">
         <div className="wrap about-layout">
           <div className="about-photo">
             <Photo kind="demo-portrait" alt={c.portrait} />
@@ -341,11 +339,15 @@ function Home({ locale }: Props) {
           <div>
             <h2>{c.hello}</h2>
             <p className="lead">{c.bio}</p>
-            <PageLink to={href(locale, "about-me")}>{c.about}</PageLink>
+            <PageLink to="#approach">{c.about}</PageLink>
+            <div id="approach" tabIndex={-1} className="fragment-panel">
+              <h3>{c.approach}</h3>
+              <p>{c.approachText}</p>
+            </div>
           </div>
         </div>
       </section>
-      <section className="numbers" aria-label={c.numbers}>
+      <section id="numbers" className="numbers" aria-label={c.numbers}>
         <dl className="wrap metric-list">
           {stats.map((s) => (
             <div key={s.en}>
@@ -357,7 +359,7 @@ function Home({ locale }: Props) {
           ))}
         </dl>
       </section>
-      <section className="block testimonials">
+      <section id="testimonials" className="block testimonials">
         <div className="wrap">
           <h2>{c.testimonials}</h2>
           <p className="demo-label">{c.sampleQuotes}</p>
@@ -372,176 +374,82 @@ function Home({ locale }: Props) {
           </div>
         </div>
       </section>
-      <section className="block service-band">
+      <section id="services" className="block service-band">
         <div className="wrap">
           <div className="section-top">
             <h2>{c.services}</h2>
-            <PageLink to={href(locale, "services")}>{c.learn}</PageLink>
+            <PageLink to="#related-concerns">{c.learn}</PageLink>
           </div>
           <TreatmentList locale={locale} />
+          <div id="related-concerns" className="fragment-panel" tabIndex={-1}>
+            <h3>{c.conditions}</h3>
+            {conditions.map(({ slug, copy }) => {
+              const item = copy[locale];
+              return (
+                <details key={slug} className="condition">
+                  <summary>
+                    {item.title}
+                    <Plus size={18} aria-hidden="true" />
+                  </summary>
+                  <p>{item.intro}</p>
+                  <h4>{c.assessment}</h4>
+                  <p>{item.assessment}</p>
+                  <h4>{c.bring}</h4>
+                  <p>{item.preparation}</p>
+                  <h4>{item.question}</h4>
+                  <p>{item.answer}</p>
+                </details>
+              );
+            })}
+          </div>
         </div>
       </section>
-      <section className="block">
+      <section id="articles" className="block">
         <div className="wrap">
           <div className="section-top">
             <h2>{c.featured}</h2>
-            <PageLink to={href(locale, "articles")}>{c.allArticles}</PageLink>
+            <PageLink to="#article-library">{c.allArticles}</PageLink>
           </div>
           <ArticleCards locale={locale} />
+          <div id="article-library" tabIndex={-1}>
+            {articles.map((a) => (
+              <article
+                className="article-body"
+                key={a.slug}
+                id={a.slug}
+                tabIndex={-1}
+              >
+                <h3>{a[locale].title}</h3>
+                <p>{a[locale].intro}</p>
+                {a[locale].sections.map(([heading, body]) => (
+                  <div key={heading}>
+                    <h4>{heading}</h4>
+                    <p>{body}</p>
+                  </div>
+                ))}
+                <PageLink to="#articles">{c.featured}</PageLink>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
       <Faq locale={locale} />
-      <section className="cta">
+      <section id="booking" className="cta">
         <div className="wrap cta-row">
-          <h2>{c.priority}</h2>
-          <Book locale={locale} />
+          <div>
+            <h2>{c.priority}</h2>
+            <p>
+              {c.bookingNote} <PhoneLink locale={locale} />
+            </p>
+          </div>
+          <Book locale={locale} direct />
         </div>
       </section>
     </>
   );
 }
 
-function ReadingPage({
-  title,
-  children,
-}: {
-  title: string;
-  children: ReactNode;
-}) {
-  return (
-    <article className="wrap reading">
-      <h1>{title}</h1>
-      {children}
-    </article>
-  );
-}
-
-function InnerPage({ locale, route }: Props & { route: string }) {
-  const c = content[locale];
-  const article = articles.find((a) => route === `articles/${a.slug}`);
-  if (article) {
-    const a = article[locale];
-    return (
-      <ReadingPage title={a.title}>
-        <p className="lead">{a.intro}</p>
-        <div className="reading-photo">
-          <Photo kind={article.photo} hero />
-        </div>
-        {a.sections.map(([title, body]) => (
-          <section key={title}>
-            <h2>{title}</h2>
-            <p>{body}</p>
-          </section>
-        ))}
-        <PageLink to={href(locale, "articles")}>{c.allArticles}</PageLink>
-      </ReadingPage>
-    );
-  }
-  const condition = conditions.find((s) => route === `services/${s.slug}`)
-    ?.copy[locale];
-  if (condition)
-    return (
-      <ReadingPage title={condition.title}>
-        <p className="lead">{condition.intro}</p>
-        {[
-          [c.assessment, condition.assessment],
-          [c.bring, condition.preparation],
-          [condition.question, condition.answer],
-        ].map(([h, p]) => (
-          <section key={h}>
-            <h2>{h}</h2>
-            <p>{p}</p>
-          </section>
-        ))}
-        <Book locale={locale} />
-      </ReadingPage>
-    );
-  if (route === "about-me" || route === "about")
-    return (
-      <section className="block">
-        <div className="wrap about-layout">
-          <div className="about-photo">
-            <Photo kind="demo-portrait" alt={c.portrait} hero />
-          </div>
-          <div>
-            <h1>{c.hello}</h1>
-            <p className="lead">{c.bio}</p>
-            <h2 className="subheading">{c.approach}</h2>
-            <p>{c.approachText}</p>
-            <Book locale={locale} />
-          </div>
-        </div>
-      </section>
-    );
-  if (route === "services")
-    return (
-      <section className="block service-band">
-        <div className="wrap">
-          <h1>{c.services}</h1>
-          <p className="lead">{c.faqItems[0][1]}</p>
-          <TreatmentList locale={locale} />
-          <h2 className="subheading">{c.conditions}</h2>
-          <ul className="condition-links">
-            {conditions.map((s) => (
-              <li key={s.slug}>
-                <PageLink to={href(locale, `services/${s.slug}`)}>
-                  {s.copy[locale].title}
-                </PageLink>
-              </li>
-            ))}
-          </ul>
-          <Book locale={locale} />
-        </div>
-      </section>
-    );
-  if (route === "articles")
-    return (
-      <section className="block">
-        <div className="wrap">
-          <h1>{c.articles}</h1>
-          <ArticleCards locale={locale} />
-        </div>
-      </section>
-    );
-  if (route === "cancellation-policy")
-    return (
-      <ReadingPage title={c.policy}>
-        <p>{c.policyText}</p>
-        <PhoneLink locale={locale} />
-        <div>
-          <PageLink to={`https://wa.me/${practice.whatsapp}`}>
-            {c.chat}
-          </PageLink>
-        </div>
-      </ReadingPage>
-    );
-  if (route === "first-visit")
-    return (
-      <ReadingPage title={c.firstVisit}>
-        {c.faqItems.slice(4).map(([q, a]) => (
-          <section key={q}>
-            <h2>{q}</h2>
-            <p>{a}</p>
-          </section>
-        ))}
-        <Book locale={locale} />
-      </ReadingPage>
-    );
-  return (
-    <ReadingPage title={c.contact}>
-      <p>{c.bookingNote}</p>
-      <PhoneLink locale={locale} />
-      <div>
-        <Book locale={locale} />
-      </div>
-    </ReadingPage>
-  );
-}
-
-export function PracticePage({
-  locale,
-  route = "",
-}: Props & { route?: string }) {
+export function PracticePage({ locale }: Props) {
   const practitioner = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -555,24 +463,18 @@ export function PracticePage({
       <a className="skip-link" href="#main">
         {content[locale].skip}
       </a>
-      <Header locale={locale} route={route} />
+      <Header locale={locale} />
       <main id="main">
-        {route ? (
-          <InnerPage locale={locale} route={route} />
-        ) : (
-          <Home locale={locale} />
-        )}
+        <Home locale={locale} />
       </main>
       <Footer locale={locale} />
       <FloatingWhatsApp locale={locale} />
-      {!route && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(practitioner).replace(/</g, "\\u003c"),
-          }}
-        />
-      )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(practitioner).replace(/</g, "\\u003c"),
+        }}
+      />
     </>
   );
 }

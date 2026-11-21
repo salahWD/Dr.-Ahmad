@@ -1,60 +1,15 @@
 import type { Metadata } from "next";
-import {
-  articles,
-  conditions,
-  content,
-  practice,
-  type Locale,
-} from "./content";
+import { content, practice, type Locale } from "./content";
 
-export const routes = [
-  "services",
-  "about-me",
-  "about",
-  "first-visit",
-  "contact",
-  "articles",
-  "cancellation-policy",
-  ...conditions.map(({ slug }) => `services/${slug}`),
-  ...articles.map(({ slug }) => `articles/${slug}`),
-];
-
-export function href(locale: Locale, route = "") {
-  const base = locale === "en" ? "/en/" : "/";
-  return route ? `${base}${route}/` : base;
+export function href(locale: Locale) {
+  return locale === "en" ? "/en/" : "/";
 }
 
-export function staticParams() {
-  return routes.map((route) => ({ path: route.split("/") }));
-}
-
-export function buildMetadata(locale: Locale, route = ""): Metadata {
+export function buildMetadata(locale: Locale): Metadata {
   const copy = content[locale];
-  const service = conditions.find(({ slug }) => route === `services/${slug}`)
-    ?.copy[locale];
-  const article = articles.find(({ slug }) => route === `articles/${slug}`)?.[
-    locale
-  ];
-  const pages: Partial<Record<string, [string, string]>> = {
-    services: [copy.services, copy.faqItems[0][1]],
-    about: [copy.about, copy.bio],
-    "about-me": [copy.about, copy.bio],
-    "first-visit": [copy.firstVisit, copy.faqItems[4][1]],
-    contact: [copy.contact, copy.bookingNote],
-    articles: [copy.articles, copy.featured],
-    "cancellation-policy": [copy.policy, copy.policyText],
-  };
-  const page = pages[route];
-  const name = article?.title ?? service?.title ?? page?.[0];
-  const title = name ? `${name} | ${practice.name[locale]}` : copy.title;
-  const description =
-    article?.intro ?? service?.summary ?? page?.[1] ?? copy.description;
+  const { title, description } = copy;
   const canonical =
-    practice.siteUrl &&
-    new URL(
-      href(locale, route === "about" ? "about-me" : route),
-      practice.siteUrl,
-    ).href;
+    practice.siteUrl && new URL(href(locale), practice.siteUrl).href;
   const image =
     practice.siteUrl &&
     new URL("/images/blue-portrait-1200.webp", practice.siteUrl).href;
@@ -68,9 +23,9 @@ export function buildMetadata(locale: Locale, route = ""): Metadata {
         ? {
             canonical,
             languages: {
-              ar: new URL(href("ar", route), practice.siteUrl).href,
-              en: new URL(href("en", route), practice.siteUrl).href,
-              "x-default": new URL(href("ar", route), practice.siteUrl).href,
+              ar: new URL(href("ar"), practice.siteUrl).href,
+              en: new URL(href("en"), practice.siteUrl).href,
+              "x-default": new URL(href("ar"), practice.siteUrl).href,
             },
           }
         : undefined,
