@@ -9,6 +9,16 @@ function subscribeToHash(update: () => void) {
   return () => window.removeEventListener("hashchange", update);
 }
 
+function subscribeToScroll(update: () => void) {
+  window.addEventListener("scroll", update, { passive: true });
+  return () => window.removeEventListener("scroll", update);
+}
+
+export function FixedHeader({ children }: { children: ReactNode }) {
+  const compact = useSyncExternalStore(subscribeToScroll, () => window.scrollY > 32, () => false);
+  return <header className="site-header" data-compact={compact}>{children}</header>;
+}
+
 export function LanguageLink({
   locale,
   base,

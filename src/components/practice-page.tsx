@@ -23,10 +23,11 @@ import {
   practice,
   stats,
   treatments,
+  values,
   type Locale,
 } from "@/lib/content";
 import { href } from "@/lib/routes";
-import { LanguageLink, MobileMenu } from "./landing-navigation";
+import { FixedHeader, LanguageLink, MobileMenu } from "./landing-navigation";
 
 type Props = { locale: Locale };
 type PhotoKind =
@@ -63,9 +64,7 @@ function Photo({
 function Brand({ locale }: Props) {
   return (
     <a className="brand" href="#home">
-      <span className="brand-mark" aria-hidden="true">
-        <Activity size={26} strokeWidth={2} />
-      </span>
+      <img className="brand-mark" src="/mark.svg" width={48} height={48} alt="" />
       <span>
         {practice.name[locale]}
         <small>{practice.specialty[locale]}</small>
@@ -97,6 +96,7 @@ function Header({ locale }: Props) {
   const other = locale === "ar" ? "en" : "ar";
   const nav = [
     ["about-me", c.about],
+    ["values", c.values],
     ["services", c.services],
     ["articles", c.articles],
     ["faq", c.faq],
@@ -106,7 +106,7 @@ function Header({ locale }: Props) {
     </a>
   ));
   return (
-    <header className="site-header">
+    <FixedHeader>
       <div className="wrap header-row">
         <Brand locale={locale} />
         <nav aria-label={c.menu} className="desktop-nav">
@@ -123,7 +123,7 @@ function Header({ locale }: Props) {
           </MobileMenu>
         </div>
       </div>
-    </header>
+    </FixedHeader>
   );
 }
 
@@ -178,6 +178,7 @@ function Footer({ locale }: Props) {
         <Brand locale={locale} />
         <nav aria-label={c.menu}>
           <a href="#about-me">{c.about}</a>
+          <a href="#values">{c.values}</a>
           <a href="#services">{c.services}</a>
           <a href="#articles">{c.articles}</a>
           <a href="#cancellation-policy">{c.policy}</a>
@@ -305,6 +306,27 @@ function Faq({ locale }: Props) {
   );
 }
 
+function Values({ locale }: Props) {
+  return (
+    <section id="values" className="block values" aria-labelledby="values-heading">
+      <div className="wrap">
+        <h2 id="values-heading">{content[locale].values}</h2>
+        <ul className="values-list">
+          {values.map((value) => (
+            <li key={value.ar.title}>
+              <h3>{value[locale].title}</h3>
+              <div>
+                {value.quote && <blockquote lang="ar" dir="rtl">{value.quote}</blockquote>}
+                <p>{value[locale].description}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 function Home({ locale }: Props) {
   const c = content[locale];
   return (
@@ -347,6 +369,7 @@ function Home({ locale }: Props) {
           </div>
         </div>
       </section>
+      <Values locale={locale} />
       <section id="numbers" className="numbers" aria-label={c.numbers}>
         <dl className="wrap metric-list">
           {stats.map((s) => (

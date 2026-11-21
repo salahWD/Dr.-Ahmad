@@ -178,6 +178,32 @@ export const stats = [
   { value: "2", en: "Years of experience", ar: "سنتان من الخبرة" },
 ];
 
+export const values = [
+  {
+    ar: { title: "الأمانة", description: "أتحمّل مسؤولية ما أقدّمه لك. قبل أن نبدأ، أوضّح لك ما يشمله العلاج وأقترح فقط ما أملك المعرفة والخبرة لتقديمه." },
+    en: { title: "Trust and accountability", description: "I take responsibility for the care I offer. Before we start, I explain what the treatment involves and recommend only work I’m trained to do." },
+    quote: "مَنْ تَطَبَّبَ وَلَمْ يُعْلَمْ مِنْهُ طِبٌّ فَهُوَ ضَامِنٌ",
+  },
+  {
+    ar: { title: "الإتقان وطلب العلم المستمر", description: "أراجع ما أتعلمه وأطبّقه بعناية. في كل متابعة، أسألك عمّا تغيّر في يومك لأعرف أين أفادتك الخطة وأين تحتاج إلى تعديل." },
+    en: { title: "Excellence and lifelong learning", description: "I keep studying and put what I learn into practice with care. At follow-up visits, I ask what has changed in your daily life so we can decide what to keep or adjust." },
+    quote: "ان الله يحب اذا عمل احدكم عملا ان يتقنه",
+  },
+  {
+    ar: { title: "الرحمة والسماحة", description: "أعطيك وقتاً لتصف ما يؤلمك وما يقلقك. وإذا كانت حركة ما صعبة عليك، نتوقّف ونبحث معاً عن خطوة تناسبك." },
+    en: { title: "Compassion and gentleness", description: "I give you time to tell me what hurts and what worries you. If a movement feels too difficult, we pause and find a step you feel comfortable taking." },
+    quote: "الرَّاحِمُونَ يَرْحَمُهُمُ الرَّحْمَنُ",
+  },
+  {
+    ar: { title: "الصدق والشفافية في التشخيص", description: "أشرح لك ما أظهره التقييم وما بقي غير واضح، بلغة يسهل فهمها. نناقش الخيارات المتاحة وأسباب اقتراحي لكل خطوة قبل أن تقرّر." },
+    en: { title: "Honesty and transparency in diagnosis", description: "I explain what the assessment shows and what remains uncertain in plain language. We discuss your options and the reason for each recommendation before you decide." },
+  },
+  {
+    ar: { title: "التواضع والاعتراف بحدود العلم", description: "أؤمن بأن الشفاء بيد الله وحده، وأن عملنا مجرد سبب. أبذل ما في وسعي، وأصارحك حين أحتاج إلى رأي زميل أو حين تكون الإحالة إلى اختصاصي آخر أنسب لك." },
+    en: { title: "Humility and the limits of knowledge", description: "I believe healing is in God’s hands and that our work is one means of care. I do my part and tell you when I need a colleague’s opinion or when another specialist is better placed to help." },
+  },
+];
+
 export const articles = [
   {
     slug: "your-first-session",
@@ -290,6 +316,7 @@ export const content = {
       "Sports physiotherapy, rehabilitation and home care with Dr. Ahmad Bakhach in Lebanon.",
     home: "Home",
     about: "About me",
+    values: "My values",
     services: "Services",
     articles: "Articles",
     faq: "FAQ",
@@ -375,6 +402,7 @@ export const content = {
       "علاج فيزيائي رياضي وإعادة تأهيل ورعاية منزلية مع د. أحمد بخاش في لبنان.",
     home: "الرئيسية",
     about: "نبذة عنّي",
+    values: "قيمي",
     services: "الخدمات",
     articles: "المقالات",
     faq: "أسئلة شائعة",
