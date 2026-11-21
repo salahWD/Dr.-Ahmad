@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
-  <rect width="48" height="48" rx="13" fill="#45543f"/>
-  <path d="M9 25h8l4-11 6 21 5-10h7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <title>ب — Bakhach</title>
+  <path fill="#103C6C" d="M32 1C25 7 3 12 3 30v21c0 7 5 12 12 12h34c7 0 12-5 12-12V30C61 12 39 7 32 1Z"/>
+  <path fill="#fff" d="M48 18c3 4 4 8 4 12 0 8-8 14-22 14-11 0-18-4-18-11 0-4 2-8 6-12-2 4-3 7-2 10 1 4 6 6 15 6 8 0 15-2 16-5 0-2-1-5-3-8l4-6Z"/>
+  <path fill="#92D5FF" d="m32 47 5 5-5 5-5-5z"/>
 </svg>

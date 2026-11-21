@@ -1,6 +1,6 @@
-# Dr. Ahmad Physiotherapy
+# Dr. Ahmad Bakhach Physiotherapy
 
-The Arabic site opens at `/` and the English site at `/en/`. The Next.js App Router generates static HTML on both routes. Appointment links open WhatsApp or the phone dialer and Dr. Ahmad confirms appointments directly.
+The sky-blue site is a single landing page in Arabic at `/` and English at `/en/`. Section links work as bookmarks, and the language switch preserves the current fragment. The Next.js App Router exports static HTML to `out/`.
 
 ```sh
 npm ci
@@ -9,29 +9,16 @@ npm run check
 npm run build
 ```
 
-The production export is in `out/`.
+## Content and booking
 
-## Edit the design or content
+- Edit the localized practice profile, services, seven FAQs, articles, figures and testimonials in `src/lib/content.ts`.
+- The supplied Lebanese clinic number is **76 937 274**. The header and hero link to the booking section. Its booking button opens a localized WhatsApp message addressed to **+961 76 937 274**. The floating WhatsApp button opens a conversation without a preset message.
+- `PRACTICE_PHONE` and `PRACTICE_WHATSAPP` override their respective destinations at build time. Use international numbers including country codes.
+- The profile, services, articles, FAQ and booking sections use `#about-me`, `#services`, `#articles`, `#faq` and `#booking`. Each article and the cancellation policy have an in-page link in both languages.
+- `SITE_URL` configures canonical URLs. The demo defaults to `noindex`. Set `SITE_INDEXABLE=true` only once the production content is approved.
 
-- `src/app/theme.css` holds the colors, font families, and layout variables. The Arabic heading font is Alexandria and the Arabic body font is Noto Sans Arabic. Both are self-hosted through Fontsource.
-- `src/lib/content.ts` contains the practice profile, service entries, and both languages. Confirm the three draft services, full name, credentials, address, and hours before launch.
-- `.agents/skills/taste-skill/` contains the project-local Taste skill.
+## Design and demo material
 
-Provide site settings in `.env.local` and in the deployment build environment. These values become public in the static output.
+The palette is defined in `src/app/theme.css`. English uses DM Sans and Arabic uses Noto Sans Arabic, both self-hosted. Responsive photography is in `public/images/`. `blue-portrait-*.webp` is the hero and `demo-portrait-*.webp` is the profile image. Both depict a fictional clinician.
 
-| Setting | Value |
-| --- | --- |
-| `PRACTICE_PHONE` | Confirmed, dialable clinic number including country code |
-| `PRACTICE_WHATSAPP` | Confirmed WhatsApp number including country code |
-| `PRACTICE_MAP_URL` | Full directions URL to the confirmed location |
-| `SITE_URL` | Production origin including `https://` |
-| `SITE_INDEXABLE` | Set to `true` once the production copy and practice details are approved |
-
-The draft uses `noindex` and shows a contact status until a real phone or WhatsApp number is configured.
-
-## Imagery
-
-The two editorial images were created with built-in ImageGen and saved as responsive WebP files in `public/images/`. They are illustrative scenes, with faces cropped out. Replace them with approved practice photography when it becomes available.
-
-- `movement-assessment-*.webp` uses a horizontal, collarbones-down photo of an adult patient in dark olive exercise clothes on a charcoal bench with a sage-scrubbed clinician supporting their upper arm and hand. Keep the hands and shoulder near the center. Use soft window daylight, warm off-white and olive walls, oak slats, and natural textures. Exclude faces, text, logos, borders, overlays, and equipment clutter.
-- `first-visit-*.webp` uses a horizontal side view of a seated patient in cream and olive and a sage-scrubbed clinician explaining the next steps. Keep knees and hands near the center, with soft light, limestone, and pale wood. Exclude faces, writing, logos, borders, and overlays.
+Replace the demo portraits, institution wordmarks and example testimonials with approved material. The cancellation information in the FAQ provides contact instructions. Add the clinic’s confirmed cancellation terms and licensing details when available.
