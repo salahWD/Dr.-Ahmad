@@ -1,0 +1,1 @@
+ALTER TABLE `bookings` ADD `google_event_id` text;

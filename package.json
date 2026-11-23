@@ -5,11 +5,17 @@
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build --webpack",
-    "check": "tsc --noEmit"
+    "start": "next start",
+    "check": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.3.0",
     "@fontsource-variable/noto-sans-arabic": "^5",
+    "@gsap/react": "^2.1.2",
+    "@libsql/client": "^0.18.0",
+    "drizzle-orm": "^0.45.4",
+    "gsap": "^3.15.1",
     "lucide-react": "^0.577.0",
     "next": "16.4.6",
     "react": "^19.2.0",
@@ -20,6 +26,7 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "drizzle-kit": "^0.31.11",
     "tailwindcss": "4.2.4",
     "typescript": "^5.9.0"
   }
